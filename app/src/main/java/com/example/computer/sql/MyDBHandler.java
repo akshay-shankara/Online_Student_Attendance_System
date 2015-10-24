@@ -21,7 +21,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_USN = "usn";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_PHONENO = "phoneno";
-    public static final String COLUMN_EMAIL = "email";
+    public static final String COLUMN_EMAILID = "emailid";
     public static final String COLUMN_SECTION = "section";
     public static final String COLUMN_BRANCH = "branch";
     public static final String COLUMN_SEMESTER = "semester";

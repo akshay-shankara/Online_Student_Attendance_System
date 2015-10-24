@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 public class Student {
 
-    private String usn, name, branch, section, sub1, sub2, sub3, sub4, sub5, sub6, phoneno, email;
+    private String usn, name, branch, section, sub1, sub2, sub3, sub4, sub5, sub6, phoneno, emailid;
     private int semester;
 
     //Default Constructor
@@ -28,13 +28,13 @@ public class Student {
         this.sub5 = sub5;
         this.sub6 = sub6;
         this.phoneno = phoneno;
-        this.email = email;
+        this.emailid = email;
         this.semester = semester;
     }
 
     //GETTERS
-    public String getEmail() {
-        return email;
+    public String getEmailid() {
+        return emailid;
     }
 
     public String getPhoneno() {
@@ -96,7 +96,7 @@ public class Student {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.emailid = email;
     }
 
     public void setName(String name) {
@@ -146,7 +146,7 @@ public class Student {
         cValues.put(MyDBHandler.COLUMN_USN, getUsn());
         cValues.put(MyDBHandler.COLUMN_NAME, getName());
         cValues.put(MyDBHandler.COLUMN_PHONENO, getPhoneno());
-        cValues.put(MyDBHandler.COLUMN_EMAIL, getEmail());
+        cValues.put(MyDBHandler.COLUMN_EMAILID, getEmailid());
         cValues.put(MyDBHandler.COLUMN_SEMESTER, getSemester());
         cValues.put(MyDBHandler.COLUMN_BRANCH, getBranch());
         cValues.put(MyDBHandler.COLUMN_SECTION, getSection());
