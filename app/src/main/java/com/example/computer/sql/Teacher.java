@@ -3,15 +3,16 @@ package com.example.computer.sql;
 
 public class Teacher {
 
-    private int _teacherid;
-    private String teachername,branch;
+    private int teacherid;
+    private String teachername, branch;
 
     //Default Constructor
-    public Teacher(){}
+    public Teacher() {
+    }
 
     //Constructor
     public Teacher(int _teacherid, String teachername, String branch) {
-        this._teacherid = _teacherid;
+        this.teacherid = _teacherid;
         this.teachername = teachername;
         this.branch = branch;
     }
@@ -19,7 +20,7 @@ public class Teacher {
 
     //SETTERS
     public void set_teacherid(int _teacherid) {
-        this._teacherid = _teacherid;
+        this.teacherid = _teacherid;
     }
 
     public void setTeachername(String teachername) {
@@ -32,7 +33,7 @@ public class Teacher {
 
     //GETTERS
     public int get_teacherid() {
-        return _teacherid;
+        return teacherid;
     }
 
     public String getTeachername() {

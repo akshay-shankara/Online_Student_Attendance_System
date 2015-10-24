@@ -3,10 +3,11 @@ package com.example.computer.sql;
 
 public class Subject {
     private int semester;
-    private String subjectid,subjectname;
+    private String subjectid, subjectname;
 
     //Default Constructor
-    public Subject(){}
+    public Subject() {
+    }
 
 
     //Constructor

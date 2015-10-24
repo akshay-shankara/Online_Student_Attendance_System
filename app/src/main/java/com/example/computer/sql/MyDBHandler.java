@@ -1,10 +1,9 @@
 package com.example.computer.sql;
 
-import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.Cursor;
 import android.content.Context;
-import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 
 public class MyDBHandler extends SQLiteOpenHelper {
 
@@ -15,11 +14,11 @@ public class MyDBHandler extends SQLiteOpenHelper {
     public static final String TABLE_STUDENT = "student";
     public static final String TABLE_SUBJECT = "subject";
     public static final String TABLE_TEACHER = "teacher";
-    public static final String TABLE__DEPARTMENT = "department";
+    public static final String TABLE_DEPARTMENT = "department";
     public static final String TABLE_ATTENDANCE = "attendance";
 
     //Student columns
-    public static final String COLUMN_USN = "_usn";
+    public static final String COLUMN_USN = "usn";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_PHONENO = "phoneno";
     public static final String COLUMN_EMAIL = "email";
@@ -34,11 +33,11 @@ public class MyDBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_SUB6 = "sub6";
 
     //Subject columns
-    public static final String COLUMN_SUBJECTID = "_subjectid";
+    public static final String COLUMN_SUBJECTID = "subjectid";
     public static final String COLUMN_SUBJECTNAME = "subjectname";
 
     //Teacher columns
-    public static final String COLUMMN_TEACHERID = "_teacherid";
+    public static final String COLUMN_TEACHERID = "teacherid";
     public static final String COLUMN_TEACHERNAME = "teachername";
 
     //Department Columns
@@ -55,13 +54,13 @@ public class MyDBHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         String studentquery = "CREATE TABLE IF NOT EXISTS student (" +
-                "_usn INTEGER PRIMARY KEY," +
+                "usn TEXT PRIMARY KEY," +
                 "name TEXT NOT NULL," +
                 "phoneno INTEGER," +
                 "emailid TEXT," +
                 "semester INTEGER NOT NULL," +
-                "branch INTEGER NOT NULL," +
-                "section INTEGER NOT NULL," +
+                "branch TEXT NOT NULL," +
+                "section TEXT NOT NULL," +
                 "sub1 INTEGER NOT NULL," +
                 "sub2 INTEGER NOT NULL," +
                 "sub3 INTEGER NOT NULL," +
@@ -73,20 +72,18 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 "foreign key(semester) references attendance(semester));";
 
         String subjectquery = "CREATE TABLE IF NOT EXISTS subject (" +
-                "_subjectid TEXT PRIMARY KEY," +
+                "subjectid TEXT PRIMARY KEY," +
                 "semester INTEGER NOT NULL," +
                 "subjectname TEXT NOT NULL);";
 
         String teacherquery = "CREATE TABLE IF NOT EXISTS teacher (" +
-                "_teacherid INTEGER PRIMARY KEY," +
+                "teacherid INTEGER PRIMARY KEY," +
                 "teachername TEXT NOT NULL," +
-                "subjectid TEXT NOT NULL," +
-                "branch INTEGER NOT NULL," +
-                "foreign key(subjectid) references subject(subjectid)," +
+                "branch TEXT NOT NULL," +
                 "foreign key(branch) references department(branch));";
 
         String departmentquery = "CREATE TABLE IF NOT EXISTS department (" +
-                "_branch INTEGER PRIMARY KEY," +
+                "branch TEXT PRIMARY KEY," +
                 "hodname TEXT NOT NULL);";
 
         String attendancequery = "CREATE TABLE IF NOT EXISTS attendance (" +
@@ -95,7 +92,6 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 "subjectid INTEGER NOT NULL," +
                 "section TEXT NOT NULL," +
                 "total INTEGER NOT NULL," +
-                "primary key(semester,section)," +
                 "foreign key(teacherid) references teacher(teacherid)," +
                 "foreign key(subjectid) references subject(subjectid));";
 
@@ -104,6 +100,10 @@ public class MyDBHandler extends SQLiteOpenHelper {
         db.execSQL(subjectquery);
         db.execSQL(attendancequery);
         db.execSQL(studentquery);
+
+        //INSERT DATA
+        InsertData ins = new InsertData();
+        ins.insert(db);
     }
 
     @Override
@@ -112,33 +112,23 @@ public class MyDBHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ATTENDANCE);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SUBJECT);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TEACHER);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE__DEPARTMENT);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_DEPARTMENT);
         onCreate(db);
     }
 
-    public void insertsubject(){
 
-        SQLiteDatabase db = getWritableDatabase();
-
-        ContentValues cValues = new ContentValues();
-        cValues.put(COLUMN_SUBJECTID, "10CS30");
-        cValues.put(COLUMN_SUBJECTNAME, "Flat");
-        cValues.put(COLUMN_SEMESTER, 5);
-        db.insert(TABLE_SUBJECT, null, cValues);
-    }
-
-    //Print Database as String
-    public String databaseToString(){
+    //SELECT ALL ROWS IN A TABLE
+    public String selectAll(String tableName) {
         String dbString = "";
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT * FROM " + TABLE_SUBJECT+";";
-        String[] columns = {COLUMN_SUBJECTID, COLUMN_SUBJECTNAME,};
+        String query = "SELECT * FROM " + tableName + ";";
 
-        Cursor c = db.rawQuery(query,null);
+        Cursor c = db.rawQuery(query, null);
         c.moveToFirst();
-        while(!c.isAfterLast()) {
-            for (int i = 0; i < columns.length; i++) {
+        String[] columns = c.getColumnNames();
+        while (!c.isAfterLast()) {
+            for (int i = 0; i < c.getColumnCount(); i++) {
                 if (c.getString(c.getColumnIndex(columns[i])) != null) {
                     dbString += c.getString(c.getColumnIndex(columns[i]));
                     dbString += " ";
@@ -147,6 +137,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
             dbString += "\n";
             c.moveToNext();
         }
+        c.close();
         return dbString;
     }
 

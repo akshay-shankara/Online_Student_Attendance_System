@@ -1,7 +1,7 @@
 package com.example.computer.sql;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -11,7 +11,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     MyDBHandler dbHandler;
-    Button buttonIns,buttonView;
+    Button buttonIns, buttonView;
     TextView textData;
 
     @Override
@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dbHandler = new MyDBHandler(this,null,null,1);
+        dbHandler = new MyDBHandler(this, null, null, 1);
 
         textData = (TextView) findViewById(R.id.textData);
         buttonIns = (Button) findViewById(R.id.buttonIns);
@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        dbHandler.insertsubject();
                         Toast.makeText(getApplicationContext(), "Row Added", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -39,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String dbString = dbHandler.databaseToString();
+                        String dbString = dbHandler.selectAll(MyDBHandler.TABLE_STUDENT);
                         textData.setText(dbString);
                     }
                 }

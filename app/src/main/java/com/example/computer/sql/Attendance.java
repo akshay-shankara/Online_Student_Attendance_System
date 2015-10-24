@@ -3,11 +3,12 @@ package com.example.computer.sql;
 
 public class Attendance {
 
-    private int teacherid,semester,total;
-    private String section,subjectid;
+    private int teacherid, semester, total;
+    private String section, subjectid;
 
     //Default Constructor
-    public Attendance(){}
+    public Attendance() {
+    }
 
     //Constructor
     public Attendance(int teacherid, int semester, int total, String section, String subjectid) {

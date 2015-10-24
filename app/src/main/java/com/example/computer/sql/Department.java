@@ -3,10 +3,11 @@ package com.example.computer.sql;
 
 public class Department {
 
-    private String branch,hodname;
+    private String branch, hodname;
 
     //Default Constructor
-    public Department(){}
+    public Department() {
+    }
 
 
     //Constructor

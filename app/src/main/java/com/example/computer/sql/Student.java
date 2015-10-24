@@ -3,15 +3,16 @@ package com.example.computer.sql;
 
 public class Student {
 
-    private String _usn,name,branch,section,sub1,sub2,sub3,sub4,sub5,sub6;
+    private String usn, name, branch, section, sub1, sub2, sub3, sub4, sub5, sub6;
     private int semester;
 
     //Default Constructor
-    public Student(){}
+    public Student() {
+    }
 
     //Constructor
     public Student(String _usn, String name, String branch, String section, String sub1, String sub2, String sub4, String sub3, String sub6, String sub5, int semester) {
-        this._usn = _usn;
+        this.usn = _usn;
         this.name = name;
         this.branch = branch;
         this.section = section;
@@ -27,7 +28,7 @@ public class Student {
 
     //GETTERS
     public String get_usn() {
-        return _usn;
+        return usn;
     }
 
     public String getName() {
@@ -73,7 +74,7 @@ public class Student {
 
     //SETTERS
     public void set_usn(String _usn) {
-        this._usn = _usn;
+        this.usn = _usn;
     }
 
     public void setName(String name) {
