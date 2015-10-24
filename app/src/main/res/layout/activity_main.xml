@@ -8,7 +8,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Click Me First!"
+        android:text="Subjects and teachers"
         android:id="@+id/buttonIns"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -18,7 +18,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Click me second!"
+        android:text="Total Classes"
         android:id="@+id/buttonView"
         android:layout_below="@+id/buttonIns"
         android:layout_centerHorizontal="true"
@@ -36,5 +36,18 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
         android:gravity="top|center" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:inputType="text"
+        android:editable="true"
+        android:text="ENTER USN!!!"
+        android:gravity="center"
+        android:autoText="false" />
 
 </RelativeLayout>

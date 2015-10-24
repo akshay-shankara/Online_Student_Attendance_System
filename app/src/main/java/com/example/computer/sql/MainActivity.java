@@ -4,15 +4,15 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 public class MainActivity extends AppCompatActivity {
 
     MyDBHandler dbHandler;
     Button buttonIns, buttonView;
     TextView textData;
+    EditText input;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
         dbHandler = new MyDBHandler(this, null, null, 1);
 
+        input = (EditText) findViewById(R.id.editText);
         textData = (TextView) findViewById(R.id.textData);
         buttonIns = (Button) findViewById(R.id.buttonIns);
         buttonView = (Button) findViewById(R.id.buttonView);
@@ -29,7 +30,11 @@ public class MainActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getApplicationContext(), "Row Added", Toast.LENGTH_SHORT).show();
+                        String inputText = input.getText().toString();
+                        Student student = new Student();
+                        student.setUsn(inputText);
+                        String output = dbHandler.studentGetTeacherDetails(student);                //Gets the teachers who takes class for the student
+                        textData.setText(output);
                     }
                 }
         );
@@ -38,8 +43,11 @@ public class MainActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String dbString = dbHandler.selectAll(MyDBHandler.TABLE_STUDENT);
-                        textData.setText(dbString);
+                        String inputText = input.getText().toString();
+                        Student student = new Student();
+                        student.setUsn(inputText);
+                        String output = dbHandler.studentGetTotalClasses(student);                  //Gets the subject name it's total classes
+                        textData.setText(output);
                     }
                 }
         );

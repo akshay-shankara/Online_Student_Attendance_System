@@ -131,7 +131,7 @@ public class InsertData {
         db.insert(MyDBHandler.TABLE_ATTENDANCE, null, cValues);
 
         cValues.clear();
-        cValues.put(MyDBHandler.COLUMN_TEACHERID, 4);
+        cValues.put(MyDBHandler.COLUMN_TEACHERID, 3);
         cValues.put(MyDBHandler.COLUMN_SEMESTER, 5);
         cValues.put(MyDBHandler.COLUMN_SUBJECTID, "10CS51");
         cValues.put(MyDBHandler.COLUMN_SECTION, "B");
