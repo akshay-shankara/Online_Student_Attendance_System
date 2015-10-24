@@ -1,9 +1,12 @@
 package com.example.computer.sql;
 
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
+
 public class Student {
 
-    private String usn, name, branch, section, sub1, sub2, sub3, sub4, sub5, sub6;
+    private String usn, name, branch, section, sub1, sub2, sub3, sub4, sub5, sub6, phoneno, email;
     private int semester;
 
     //Default Constructor
@@ -11,23 +14,34 @@ public class Student {
     }
 
     //Constructor
-    public Student(String _usn, String name, String branch, String section, String sub1, String sub2, String sub4, String sub3, String sub6, String sub5, int semester) {
-        this.usn = _usn;
+
+
+    public Student(String usn, String name, String branch, String section, String sub1, String sub2, String sub3, String sub4, String sub5, String sub6, String phoneno, String email, int semester) {
+        this.usn = usn;
         this.name = name;
         this.branch = branch;
         this.section = section;
         this.sub1 = sub1;
         this.sub2 = sub2;
-        this.sub4 = sub4;
         this.sub3 = sub3;
-        this.sub6 = sub6;
+        this.sub4 = sub4;
         this.sub5 = sub5;
+        this.sub6 = sub6;
+        this.phoneno = phoneno;
+        this.email = email;
         this.semester = semester;
     }
 
-
     //GETTERS
-    public String get_usn() {
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPhoneno() {
+        return phoneno;
+    }
+
+    public String getUsn() {
         return usn;
     }
 
@@ -73,8 +87,16 @@ public class Student {
 
 
     //SETTERS
-    public void set_usn(String _usn) {
-        this.usn = _usn;
+    public void setUsn(String usn) {
+        this.usn = usn;
+    }
+
+    public void setPhoneno(String phoneno) {
+        this.phoneno = phoneno;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setName(String name) {
@@ -115,5 +137,25 @@ public class Student {
 
     public void setSemester(int semester) {
         this.semester = semester;
+    }
+
+    //Insert Data
+    public void studentDataInput (SQLiteDatabase db) {
+        ContentValues cValues = new ContentValues();
+
+        cValues.put(MyDBHandler.COLUMN_USN, getUsn());
+        cValues.put(MyDBHandler.COLUMN_NAME, getName());
+        cValues.put(MyDBHandler.COLUMN_PHONENO, getPhoneno());
+        cValues.put(MyDBHandler.COLUMN_EMAIL, getEmail());
+        cValues.put(MyDBHandler.COLUMN_SEMESTER, getSemester());
+        cValues.put(MyDBHandler.COLUMN_BRANCH, getBranch());
+        cValues.put(MyDBHandler.COLUMN_SECTION, getSection());
+        cValues.put(MyDBHandler.COLUMN_SUB1, getSub1());
+        cValues.put(MyDBHandler.COLUMN_SUB2, getSub2());
+        cValues.put(MyDBHandler.COLUMN_SUB3, getSub3());
+        cValues.put(MyDBHandler.COLUMN_SUB4, getSub4());
+        cValues.put(MyDBHandler.COLUMN_SUB5, getSub5());
+        cValues.put(MyDBHandler.COLUMN_SUB6, getSub6());
+        db.insert(MyDBHandler.TABLE_STUDENT, null, cValues);
     }
 }

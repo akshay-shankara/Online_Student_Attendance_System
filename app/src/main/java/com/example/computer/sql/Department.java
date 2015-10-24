@@ -1,6 +1,9 @@
 package com.example.computer.sql;
 
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
+
 public class Department {
 
     private String branch, hodname;
@@ -32,7 +35,17 @@ public class Department {
         return branch;
     }
 
-    public String getHodname() {
+    public String getHodName() {
         return hodname;
+    }
+
+    //Insert Data
+    public void departmentDataInput(SQLiteDatabase db) {
+        ContentValues cValues = new ContentValues();
+
+        cValues.put(MyDBHandler.COLUMN_BRANCH, getBranch());
+        cValues.put(MyDBHandler.COLUMN_HODNAME, getHodName());
+        db.insert(MyDBHandler.TABLE_DEPARTMENT, null, cValues);
+
     }
 }

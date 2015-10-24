@@ -140,6 +140,8 @@ public class InsertData {
         //STUDENT TABLE
         cValues.put(MyDBHandler.COLUMN_USN, "1RN13IS001");
         cValues.put(MyDBHandler.COLUMN_NAME, "Abhay");
+        cValues.put(MyDBHandler.COLUMN_PHONENO, "9900123456");
+        cValues.put(MyDBHandler.COLUMN_EMAIL, "abhay@gmail.com");
         cValues.put(MyDBHandler.COLUMN_SEMESTER, 5);
         cValues.put(MyDBHandler.COLUMN_BRANCH, "IS");
         cValues.put(MyDBHandler.COLUMN_SECTION, "A");

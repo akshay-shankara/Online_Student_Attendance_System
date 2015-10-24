@@ -1,6 +1,9 @@
 package com.example.computer.sql;
 
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
+
 public class Attendance {
 
     private int teacherid, semester, total;
@@ -61,6 +64,18 @@ public class Attendance {
 
     public String getSubjectid() {
         return subjectid;
+    }
+
+    //Insert Data
+    public void attendanceDataInput(SQLiteDatabase db) {
+        ContentValues cValues = new ContentValues();
+
+        cValues.put(MyDBHandler.COLUMN_TEACHERID, getTeacherid());
+        cValues.put(MyDBHandler.COLUMN_SEMESTER, getSemester());
+        cValues.put(MyDBHandler.COLUMN_SUBJECTID, getSubjectid());
+        cValues.put(MyDBHandler.COLUMN_SECTION, getSection());
+        cValues.put(MyDBHandler.COLUMN_TOTAL, getTotal());
+        db.insert(MyDBHandler.TABLE_ATTENDANCE, null, cValues);
     }
 }
 

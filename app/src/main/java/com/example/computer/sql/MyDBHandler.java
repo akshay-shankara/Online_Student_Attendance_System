@@ -56,7 +56,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         String studentquery = "CREATE TABLE IF NOT EXISTS student (" +
                 "usn TEXT PRIMARY KEY," +
                 "name TEXT NOT NULL," +
-                "phoneno INTEGER," +
+                "phoneno TEXT," +
                 "emailid TEXT," +
                 "semester INTEGER NOT NULL," +
                 "branch TEXT NOT NULL," +
@@ -115,6 +115,47 @@ public class MyDBHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_DEPARTMENT);
         onCreate(db);
     }
+
+
+    //BEGIN QUERIES
+
+
+    //ADD A NEW STUDENT
+    public void insertStudent(Student student) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        student.studentDataInput(db);
+    }
+
+    //ADD A NEW TEACHER
+    public void insertTeacher(Teacher teacher) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        teacher.teacherDataInput(db);
+    }
+
+    //ADD A NEW SUBJECT
+    public void insertSubject(Subject subject) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        subject.subjectDataInput(db);
+    }
+
+    //ADD NEW DEPARTMENT
+    public void insertDepartment(Department department) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        department.departmentDataInput(db);
+    }
+
+    //ADD A NEW ATTENDANCE
+    public void insertAttendance(Attendance attendance) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        attendance.attendanceDataInput(db);
+    }
+
+
+
+
+
+
+
 
 
     //SELECT ALL ROWS IN A TABLE

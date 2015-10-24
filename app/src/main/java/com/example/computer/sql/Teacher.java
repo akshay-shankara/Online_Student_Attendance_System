@@ -1,6 +1,9 @@
 package com.example.computer.sql;
 
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
+
 public class Teacher {
 
     private int teacherid;
@@ -11,16 +14,15 @@ public class Teacher {
     }
 
     //Constructor
-    public Teacher(int _teacherid, String teachername, String branch) {
-        this.teacherid = _teacherid;
+    public Teacher(int teacherid, String teachername, String branch) {
+        this.teacherid = teacherid;
         this.teachername = teachername;
         this.branch = branch;
     }
 
-
     //SETTERS
-    public void set_teacherid(int _teacherid) {
-        this.teacherid = _teacherid;
+    public void setTeacherid(int teacherid) {
+        this.teacherid = teacherid;
     }
 
     public void setTeachername(String teachername) {
@@ -32,7 +34,7 @@ public class Teacher {
     }
 
     //GETTERS
-    public int get_teacherid() {
+    public int getTeacherid() {
         return teacherid;
     }
 
@@ -42,5 +44,16 @@ public class Teacher {
 
     public String getBranch() {
         return branch;
+    }
+
+    //Insert Data
+    public void teacherDataInput (SQLiteDatabase db) {
+        ContentValues cValues = new ContentValues();
+
+        cValues.put(MyDBHandler.COLUMN_TEACHERID, getTeacherid());
+        cValues.put(MyDBHandler.COLUMN_TEACHERNAME, getTeachername());
+        cValues.put(MyDBHandler.COLUMN_BRANCH, getBranch());
+        db.insert(MyDBHandler.TABLE_TEACHER, null, cValues);
+
     }
 }
