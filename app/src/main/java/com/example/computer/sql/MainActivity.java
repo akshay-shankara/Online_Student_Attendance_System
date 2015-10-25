@@ -31,9 +31,11 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         String inputText = input.getText().toString();
-                        Teacher teacher = new Teacher();
-                        teacher.setTeacherid(1);
-                        String output = dbHandler.teacherGetAttendance(teacher);
+
+                        Department department = new Department();
+
+                        department.setBranch("IS");
+                        String output = dbHandler.hodShortage(department);
                         textData.setText(output);
                     }
                 }
@@ -45,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         String inputText = input.getText().toString();
                         Student student = new Student();
-                        student.setUsn(inputText);
-                        String output = dbHandler.studentGetTotalClasses(student);                  //Gets the subject name it's total classes
+                        student.setUsn("1RN13IS001");
+                        String output = dbHandler.studentShortage(student);
                         textData.setText(output);
                     }
                 }

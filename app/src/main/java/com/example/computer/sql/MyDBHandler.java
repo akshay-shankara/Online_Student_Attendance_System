@@ -114,7 +114,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
     }
 
 
-    //BEGIN QUERIES
+    //******************************************************BEGIN QUERIES******************************************************
 
 
     //TO ADD A NEW STUDENT FROM USER
@@ -158,7 +158,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 "order by usn;";
 
         Cursor c = db.rawQuery(query, null);
-        return databaseToString(c);
+        return databaseToStringWithNewLine(c);
     }
 
     //View Subjects with shortage
@@ -170,24 +170,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 " WHERE usn = " + "\"" + student.getUsn() + "\";";
 
         Cursor valueCursor = db.rawQuery(valueQuery, null);
-        String valueString = "";
-
-        //SAME as method databaseToString(), except "\n" IS REMOVED
-        valueCursor.moveToFirst();
-        String[] columns = valueCursor.getColumnNames();
-        while (!valueCursor.isAfterLast()) {
-            for (int i = 0; i < valueCursor.getColumnCount(); i++) {
-                if (valueCursor.getString(valueCursor.getColumnIndex(columns[i])) != null) {
-                    valueString += valueCursor.getString(valueCursor.getColumnIndex(columns[i]));
-                    valueString += " ";
-                }
-            }
-            //"\n" is removed
-            valueCursor.moveToNext();
-        }
-        valueString = valueString.substring(0, valueString.length() - 1);
-        valueCursor.close();
-        //END OF METHOD
+        String valueString = databaseToStringWithNoNewLine(valueCursor);
 
 
         //SPLITTING IT INTO STRING OF STRINGS
@@ -202,25 +185,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 "at.subjectid = su.subjectid " +
                 "order by su.subjectid;";
         Cursor totalCursor = db.rawQuery(totalQuery, null);
-        String totalString = "";
-
-        //SAME as method databaseToString(), except "\n" IS REMOVED
-        totalCursor.moveToFirst();
-        columns = totalCursor.getColumnNames();
-        while (!totalCursor.isAfterLast()) {
-            for (int i = 0; i < totalCursor.getColumnCount(); i++) {
-                if (totalCursor.getString(totalCursor.getColumnIndex(columns[i])) != null) {
-                    totalString += totalCursor.getString(totalCursor.getColumnIndex(columns[i]));
-                    totalString += " ";
-                }
-            }
-            //"\n" is removed
-            totalCursor.moveToNext();
-        }
-        totalString = totalString.substring(0, totalString.length() - 1);
-        totalCursor.close();
-        //END OF METHOD
-
+        String totalString = databaseToStringWithNoNewLine(totalCursor);
 
         //SPLITTING IT INTO STRING OF STRINGS
         String[] total = totalString.split(" ");
@@ -231,17 +196,18 @@ public class MyDBHandler extends SQLiteOpenHelper {
             float b = Integer.parseInt(value[i]);
 
             //PERCENTAGE LESS THAN 80%
-            if ((b / a) < 0.8) {
+            if ((b / a) <= 0.8) {
                 String ansQuery = "SELECT su.subjectname from attendance at,subject su,student s " +        //RETURNS NAMES OF SUBJECTS WITH SHORTAGE
                         "WHERE s.usn = " + "\"" + student.getUsn() + "\"" + " and " +
                         "s.semester = at.semester and " +
                         "s.section = at.section and " +
                         "at.subjectid = su.subjectid and " +
-                        "su.subjectid like '%" + (i + 1) + "' " +
+                        "su.subjectid like '%" + (i + 1) + "'" +
                         "order by su.subjectid;";
                 Cursor ansCursor = db.rawQuery(ansQuery, null);
-                returnValue += databaseToString(ansCursor);
-                returnValue += "\n";
+                returnValue += databaseToStringWithNoNewLine(ansCursor);
+                returnValue += (b / a) * 100 + "%";
+                returnValue += " ";
             }
         }
         if (Objects.equals(returnValue, ""))
@@ -251,7 +217,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
     }
 
     //Update contact details
-    public String studentUpdate(Student student) {
+    public int studentUpdate(Student student) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cValues = new ContentValues();
 
@@ -263,9 +229,9 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
         //db.update RETURNS THE NUMBER OF COLUMNS UPDATED
         if (check == 1)
-            return "UPDATE SUCCESSFUL";
+            return 1;                      //SUCCESSFUL
         else
-            return "UNSUCCESSFUL";
+            return 0;                      //UNSUCCESSFUL
     }
 
     //Get teacher and subject details of ONE STUDENT
@@ -279,7 +245,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 "at.teacherid = t.teacherid;";
 
         Cursor c = db.rawQuery(query, null);
-        return databaseToString(c);
+        return databaseToStringWithNewLine(c);
     }
 
     //Get the subject names and the total number of classes conducted in it
@@ -292,7 +258,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 "at.subjectid = su.subjectid;";
 
         Cursor c = db.rawQuery(query, null);
-        return databaseToString(c);
+        return databaseToStringWithNewLine(c);
     }
 
 
@@ -309,7 +275,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 "at.teacherid = t.teacherid and " +
                 "t.teacherid = " + "\"" + teacher.getTeacherid() + "\";";
         Cursor c1 = db.rawQuery(teacherQuery, null);
-        String fullSubjectCode = databaseToString(c1);
+        String fullSubjectCode = databaseToStringWithNewLine(c1);
         String subjectCode = fullSubjectCode.substring(fullSubjectCode.length() - 3, fullSubjectCode.length() - 1);  //GETS THE LAST CHARACTER OF SUBJECT CODE
 
 
@@ -320,7 +286,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 "at.teacherid = t.teacherid and " +
                 "t.teacherid = " + "\"" + teacher.getTeacherid() + "\";";
         Cursor c2 = db.rawQuery(query, null);
-        return databaseToString(c2);
+        return databaseToStringWithNewLine(c2);
     }
 
     //TAKE ATTENDANCE (YET TO COMPLETE)                                                             INCOMPLETE!!!
@@ -332,20 +298,76 @@ public class MyDBHandler extends SQLiteOpenHelper {
         /*      ### INSERT CODE HERE ###        */
 
         Cursor c = db.rawQuery(query, null);
-        return databaseToString(c);
+        return databaseToStringWithNewLine(c);
     }
 
-    //View students with shortage (YET TO COMPLETE!!!)                                              INCOMPLETE!!!
+    //View students with shortage
     public String teacherShortage(Teacher teacher) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT";                        //Complete the query
+        //MAKE A STRING OF STRING WITH USN
+        String studentQuery = "SELECT s.usn FROM student s;";
+        Cursor c = db.rawQuery(studentQuery, null);
+        String studentString = databaseToStringWithNoNewLine(c);
+        String[] studentUSN = studentString.split(" ");
 
-        /*      ### INSERT CODE HERE ###        */
 
-        Cursor c = db.rawQuery(query, null);
-        return databaseToString(c);
+        //TO OBTAIN THE LAST CHARACTER IN SUBJECT CODE
+        String subjectQuery = "SELECT su.subjectid FROM subject su,teacher t,attendance at " +
+                "WHERE su.subjectid = at.subjectid and " +
+                "at.teacherid = t.teacherid and " +
+                "t.teacherid = " + "\"" + teacher.getTeacherid() + "\";";
+        Cursor c1 = db.rawQuery(subjectQuery, null);
+        String fullSubjectCode = databaseToStringWithNewLine(c1);
+        String subjectCode = fullSubjectCode.substring(fullSubjectCode.length() - 3, fullSubjectCode.length() - 1);  //GETS THE LAST CHARACTER OF SUBJECT CODE
+
+
+        //GET THE CLASSES ATTENDED OF ALL STUDENTS WHO TAKE THAT SUBJECT!!
+        String valueQuery = "SELECT s.sub" + subjectCode + " FROM student s,teacher t,attendance at " +
+                "WHERE s.semester = at.semester and " +
+                "s.section = at.section and " +
+                "at.teacherid = t.teacherid and " +
+                "t.teacherid = " + "\"" + teacher.getTeacherid() + "\"" +
+                "order by s.usn;";
+        Cursor c2 = db.rawQuery(valueQuery, null);
+        String valueString = databaseToStringWithNoNewLine(c2);
+        String[] value = valueString.split(" ");
+
+        //GET THE TOTAL CLASSES CONDUCTED
+        String totalQuery = "SELECT at.total from attendance at,teacher t " +
+                "WHERE at.teacherid = t.teacherid and " +
+                "t.teacherid = " + "\"" + teacher.getTeacherid() + "\";";
+        Cursor c3 = db.rawQuery(totalQuery, null);
+        String totalString = databaseToStringWithNoNewLine(c3);
+        totalString = totalString.substring(0, totalString.length() - 1);
+
+
+        float a = Integer.parseInt(totalString);
+        String returnValue = "";
+
+        //FOR EACH STUDENT, CHECK IF HE/SHE HAS SHORTAGE THIS THE SUBJECT TAKEN BY THIS TEACHER
+        for (int i = 0; i < studentUSN.length; i++) {
+            float b = Integer.parseInt(value[i]);
+
+            //PERCENTAGE LESS THAN 80%
+            if ((b / a) <= 0.8) {
+                String ansQuery = "SELECT distinct s.usn,s.name FROM student s,attendance at " +
+                        "WHERE s.usn = " + "\"" + studentUSN[i] + "\"and " +
+                        "s.semester = at.semester and " +
+                        "s.section = at.section;";
+
+                Cursor ansCursor = db.rawQuery(ansQuery, null);
+                returnValue += databaseToStringWithNoNewLine(ansCursor);
+                returnValue += (b / a) * 100 + "%";
+                returnValue += "\n";
+            }
+        }
+        if (Objects.equals(returnValue, ""))
+            return "NO SHORTAGE";
+        else
+            return returnValue;
     }
+
 
     //REMOVE SHORTAGE of a particular student (YET TO COMPLETE!!!)                                  INCOMPLETE!!!
     public String teacherRemoveShortage(Teacher teacher, Student student) {
@@ -356,7 +378,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         /*      ### INSERT CODE HERE ###        */
 
         Cursor c = db.rawQuery(query, null);
-        return databaseToString(c);
+        return databaseToStringWithNewLine(c);
     }
 
 
@@ -371,7 +393,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 "order by s.section;";
 
         Cursor c = db.rawQuery(query, null);
-        return databaseToString(c);
+        return databaseToStringWithNewLine(c);
     }
 
     //Get STUDENT CONTACT DETAILS
@@ -382,35 +404,56 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 "s.branch = d.branch and " +
                 "d.branch = " + "\"" + department.getBranch() + "\";";
         Cursor c = db.rawQuery(query, null);
-        return databaseToString(c);
+        return databaseToStringWithNewLine(c);
     }
 
-    //Get the DETAILS OF STUDENTS who have shortage (YET TO COMPLETE!!!)                            INCOMPLETE!!!
-    public String hodGetShortage(Department department) {
+    //Get the DETAILS OF STUDENTS who have shortage in a PARTICULAR BRANCH of a PARTICULAR SEMESTER
+    public String hodShortage(Department department) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT";                        //Complete the query
+        //Get the USN of STUDENTS in this DEPARTMENT
+        String queryUSN = "SELECT s.usn FROM student s,department d " +
+                "WHERE s.branch = d.branch and " +
+                "d.branch = " + "\"" + department.getBranch() + "\";";
 
-        /*      ### INSERT CODE HERE ###        */
+        Cursor cursorUSN = db.rawQuery(queryUSN, null);
+        String studentUsnString = databaseToStringWithNoNewLine(cursorUSN);
+        String[] studentUSN = studentUsnString.split(" ");
 
-        Cursor c = db.rawQuery(query, null);
-        return databaseToString(c);
+        Student student = new Student();
+        //FOR EACH STUDENT, CALCULATE IF HE/SHE HAS SHORTAGE
+        String returnValue = "";
+        for (int i = 0; i < studentUSN.length; i++) {
+            student.setUsn(studentUSN[i]);
+            String query = "SELECT s.usn,s.name,s.semester,s.section FROM student s " +
+                    "where s.usn = " + "\"" + studentUSN[i] + "\";";
+            Cursor c2 = db.rawQuery(query, null);
+            returnValue += databaseToStringWithNoNewLine(c2);
+            returnValue += studentShortage(student);
+            returnValue += "\n";
+        }
+        if (Objects.equals(returnValue, ""))
+            return "NO Shortage";
+        else
+            return returnValue;
     }
 
 
-    //SELECT ALL ROWS IN A TABLE
+    //SELECT ALL COLUMNS IN A TABLE
     public String selectAll(String tableName) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String query = "SELECT * FROM " + tableName + ";";
 
         Cursor c = db.rawQuery(query, null);
-        return databaseToString(c);
+        return databaseToStringWithNewLine(c);
     }
+
+    //******************************************************END QUERIES******************************************************
 
 
     //To convert a TABLE acquired from a QUERY into a STRING
-    public String databaseToString(Cursor c) {
+    public String databaseToStringWithNewLine(Cursor c) {
         String dbString = "";
 
         c.moveToFirst();
@@ -423,6 +466,25 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 }
             }
             dbString += "\n";
+            c.moveToNext();
+        }
+        c.close();
+        return dbString;
+    }
+
+    //To convert a TABLE acquired from a QUERY into a STRING (used when 1 query result is required for another)
+    public String databaseToStringWithNoNewLine(Cursor c) {
+        String dbString = "";
+
+        c.moveToFirst();
+        String[] columns = c.getColumnNames();
+        while (!c.isAfterLast()) {
+            for (int i = 0; i < c.getColumnCount(); i++) {
+                if (c.getString(c.getColumnIndex(columns[i])) != null) {
+                    dbString += c.getString(c.getColumnIndex(columns[i]));
+                    dbString += " ";
+                }
+            }
             c.moveToNext();
         }
         c.close();

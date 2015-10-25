@@ -8,7 +8,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CLICK ME!!!"
+        android:text="hodGetShortage()"
         android:id="@+id/buttonIns"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -18,7 +18,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="DISABLED"
+        android:text="studentshortage"
         android:id="@+id/buttonView"
         android:layout_below="@+id/buttonIns"
         android:layout_centerHorizontal="true"
@@ -35,7 +35,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
-        android:gravity="top|center" />
+        android:gravity="top|center"
+        android:textSize="10sp" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -46,7 +47,6 @@
         android:layout_alignParentEnd="true"
         android:inputType="text"
         android:editable="true"
-        android:text="1"
         android:gravity="center"
         android:autoText="false" />
 

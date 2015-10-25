@@ -1,0 +1,43 @@
+STUDENT
+
+1. studentDetails()
+	PARAMETERS = student_object with setUSN()
+	RETURN VALUE = String containing 1 full row from student table 
+
+2. studentShortage()
+	PARAMETERS = student_object with setUSN()
+	RETURN VALUE = String with subject names and shortage PERCENTAGES in those subjects
+
+3. studentUpdate()
+	PARAMETERS = student_object with setEmailid() AND setPhoneno()
+	RETURN VALUE = 1 if successfull OR 0 if unsucessful
+
+4. studentGetTeacherDetails()
+	PARAMETERS = student_object with setUSN()
+	RETURN VALUE = String with all subject names and teachers that takes those subjects for that student
+
+5. studentGetTotalClasses()
+	PARAMETERS = student_object with setUSN()
+	RETURN VALUE = String with subject names and the total classes conducted
+
+
+TEACHER
+
+1. teacherGetAttendance()
+	PARAMETERS = teacher_object with setTeacherid()
+	RETURN VALUE = String with usn,name and the number of classes attended by all students (multiple rows)
+
+2. teacherShortage()
+	PARAMETERS = teacher_object with setTeacherid()
+	RETURN VALUE = String with usn,name and PERCENTAGE of students who have shortage in the subject taken by that subject
+
+
+HOD
+
+1. hodGetContact()
+	PARAMETERS = department_object with setBranch(), student_object with setUSN()
+	RETURN VALUE = String with phoneno and emailid of the student
+
+2.hodShortage()
+	PARAMETERS = department_object with setBranch()
+	RETURN VALUE = String with all student's usn, name,semester,subject and percentage who have shortage.
