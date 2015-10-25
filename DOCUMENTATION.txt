@@ -31,6 +31,9 @@ TEACHER
 	PARAMETERS = teacher_object with setTeacherid()
 	RETURN VALUE = String with usn,name and PERCENTAGE of students who have shortage in the subject taken by that subject
 
+3. teacherRemoveShortage()
+	PARAMETERS = teacher_object with setTeacherid(),student_object with setUSN(),NUMBER OF CLASSES TO BE ADDED
+	RETURN VALUE = 1 if successful, 0 if no shortage
 
 HOD
 

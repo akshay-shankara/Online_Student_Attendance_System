@@ -46,9 +46,12 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         String inputText = input.getText().toString();
+                        Teacher teacher = new Teacher();
                         Student student = new Student();
+                        teacher.setTeacherid(4);
                         student.setUsn("1RN13IS001");
-                        String output = dbHandler.studentShortage(student);
+                        int a = dbHandler.teacherRemoveShortage(teacher,student,30);
+                        String output = dbHandler.studentDetails(student);
                         textData.setText(output);
                     }
                 }

@@ -369,16 +369,53 @@ public class MyDBHandler extends SQLiteOpenHelper {
     }
 
 
-    //REMOVE SHORTAGE of a particular student (YET TO COMPLETE!!!)                                  INCOMPLETE!!!
-    public String teacherRemoveShortage(Teacher teacher, Student student) {
+    //REMOVE SHORTAGE of a particular student
+    public int teacherRemoveShortage(Teacher teacher, Student student,int addClasses) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "UPDATE";                        //Complete the query
+        //TO OBTAIN THE LAST CHARACTER IN SUBJECT CODE
+        String subjectQuery = "SELECT su.subjectid FROM subject su,teacher t,attendance at " +
+                "WHERE su.subjectid = at.subjectid and " +
+                "at.teacherid = t.teacherid and " +
+                "t.teacherid = " + "\"" + teacher.getTeacherid() + "\";";
+        Cursor c1 = db.rawQuery(subjectQuery, null);
+        String fullSubjectCode = databaseToStringWithNewLine(c1);
+        String subjectCode = fullSubjectCode.substring(fullSubjectCode.length() - 3, fullSubjectCode.length() - 1);  //GETS THE LAST CHARACTER OF SUBJECT CODE
 
-        /*      ### INSERT CODE HERE ###        */
 
-        Cursor c = db.rawQuery(query, null);
-        return databaseToStringWithNewLine(c);
+        //GET THE CLASSES ATTENDED BY THE STUDENT!!
+        String valueQuery = "SELECT s.sub" + subjectCode + " FROM student s,teacher t,attendance at " +
+                "WHERE s.usn = " + "\"" + student.getUsn() +"\"and " +
+                "s.semester = at.semester and " +
+                "s.section = at.section and " +
+                "at.teacherid = t.teacherid and " +
+                "t.teacherid = " + "\"" + teacher.getTeacherid() + "\";";
+        Cursor c2 = db.rawQuery(valueQuery, null);
+        String valueString = databaseToStringWithNoNewLine(c2);
+        valueString = valueString.substring(0, valueString.length() - 1);
+
+
+        //GET THE TOTAL CLASSES CONDUCTED
+        String totalQuery = "SELECT at.total from attendance at,teacher t " +
+                "WHERE at.teacherid = t.teacherid and " +
+                "t.teacherid = " + "\"" + teacher.getTeacherid() + "\";";
+        Cursor c3 = db.rawQuery(totalQuery, null);
+        String totalString = databaseToStringWithNoNewLine(c3);
+        totalString = totalString.substring(0, totalString.length() - 1);
+
+        float a = Integer.parseInt(totalString);
+        float b = Integer.parseInt(valueString);
+
+        //UPDATE ATTENDANCE TO THE NUMBER OF CLASSES REQUIRED
+        if ((b/a) < 0.8) {
+            String query = "UPDATE student SET sub" + subjectCode + "=" + (b+addClasses) +
+                    " WHERE usn = " +"\"" + student.getUsn() +"\";";
+            db.execSQL(query);
+            return 1;               //Successful
+        }
+        else
+            return 0;               //No Shortage
+
     }
 
 
