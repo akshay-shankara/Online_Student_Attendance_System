@@ -6,10 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class MyDBHandler extends SQLiteOpenHelper {
+import java.util.Objects;
 
-    private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "attendance.db";
+public class MyDBHandler extends SQLiteOpenHelper {
 
     //Table Names
     public static final String TABLE_STUDENT = "student";
@@ -17,7 +16,6 @@ public class MyDBHandler extends SQLiteOpenHelper {
     public static final String TABLE_TEACHER = "teacher";
     public static final String TABLE_DEPARTMENT = "department";
     public static final String TABLE_ATTENDANCE = "attendance";
-
     //Student columns
     public static final String COLUMN_USN = "usn";
     public static final String COLUMN_NAME = "name";
@@ -32,20 +30,18 @@ public class MyDBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_SUB4 = "sub4";
     public static final String COLUMN_SUB5 = "sub5";
     public static final String COLUMN_SUB6 = "sub6";
-
     //Subject columns
     public static final String COLUMN_SUBJECTID = "subjectid";
     public static final String COLUMN_SUBJECTNAME = "subjectname";
-
     //Teacher columns
     public static final String COLUMN_TEACHERID = "teacherid";
     public static final String COLUMN_TEACHERNAME = "teachername";
-
     //Department Columns
     public static final String COLUMN_HODNAME = "hodname";
-
     //Attendance Columns
     public static final String COLUMN_TOTAL = "total";
+    private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "attendance.db";
 
     public MyDBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -165,16 +161,93 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return databaseToString(c);
     }
 
-    //View Subjects with shortage (YET TO COMPLETE!!!)                                              INCOMPLETE!!!
+    //View Subjects with shortage
     public String studentShortage(Student student) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT";                        //Complete the query
+        //GETTING NUMBER OF CLASSES ATTENDED
+        String valueQuery = "SELECT sub1,sub2,sub3,sub4,sub5,sub6 FROM " + TABLE_STUDENT +
+                " WHERE usn = " + "\"" + student.getUsn() + "\";";
 
-        /*      ### INSERT CODE HERE ###        */
+        Cursor valueCursor = db.rawQuery(valueQuery, null);
+        String valueString = "";
 
-        Cursor c = db.rawQuery(query, null);
-        return databaseToString(c);
+        //SAME as method databaseToString(), except "\n" IS REMOVED
+        valueCursor.moveToFirst();
+        String[] columns = valueCursor.getColumnNames();
+        while (!valueCursor.isAfterLast()) {
+            for (int i = 0; i < valueCursor.getColumnCount(); i++) {
+                if (valueCursor.getString(valueCursor.getColumnIndex(columns[i])) != null) {
+                    valueString += valueCursor.getString(valueCursor.getColumnIndex(columns[i]));
+                    valueString += " ";
+                }
+            }
+            //"\n" is removed
+            valueCursor.moveToNext();
+        }
+        valueString = valueString.substring(0, valueString.length() - 1);
+        valueCursor.close();
+        //END OF METHOD
+
+
+        //SPLITTING IT INTO STRING OF STRINGS
+        String[] value = valueString.split(" ");
+
+
+        //GETTING TOTAL NUMBER OF CLASSES
+        String totalQuery = "SELECT at.total from attendance at,subject su,student s " +
+                "WHERE s.usn = " + "\"" + student.getUsn() + "\"" + " and " +
+                "s.semester = at.semester and " +
+                "s.section = at.section and " +
+                "at.subjectid = su.subjectid " +
+                "order by su.subjectid;";
+        Cursor totalCursor = db.rawQuery(totalQuery, null);
+        String totalString = "";
+
+        //SAME as method databaseToString(), except "\n" IS REMOVED
+        totalCursor.moveToFirst();
+        columns = totalCursor.getColumnNames();
+        while (!totalCursor.isAfterLast()) {
+            for (int i = 0; i < totalCursor.getColumnCount(); i++) {
+                if (totalCursor.getString(totalCursor.getColumnIndex(columns[i])) != null) {
+                    totalString += totalCursor.getString(totalCursor.getColumnIndex(columns[i]));
+                    totalString += " ";
+                }
+            }
+            //"\n" is removed
+            totalCursor.moveToNext();
+        }
+        totalString = totalString.substring(0, totalString.length() - 1);
+        totalCursor.close();
+        //END OF METHOD
+
+
+        //SPLITTING IT INTO STRING OF STRINGS
+        String[] total = totalString.split(" ");
+
+        String returnValue = "";
+        for (int i = 0; i < 6; i++) {
+            float a = Integer.parseInt(total[i]);
+            float b = Integer.parseInt(value[i]);
+
+            //PERCENTAGE LESS THAN 80%
+            if ((b / a) < 0.8) {
+                String ansQuery = "SELECT su.subjectname from attendance at,subject su,student s " +        //RETURNS NAMES OF SUBJECTS WITH SHORTAGE
+                        "WHERE s.usn = " + "\"" + student.getUsn() + "\"" + " and " +
+                        "s.semester = at.semester and " +
+                        "s.section = at.section and " +
+                        "at.subjectid = su.subjectid and " +
+                        "su.subjectid like '%" + (i + 1) + "' " +
+                        "order by su.subjectid;";
+                Cursor ansCursor = db.rawQuery(ansQuery, null);
+                returnValue += databaseToString(ansCursor);
+                returnValue += "\n";
+            }
+        }
+        if (Objects.equals(returnValue, ""))
+            return "NO SHORTAGE";
+        else
+            return returnValue;
     }
 
     //Update contact details
@@ -343,5 +416,4 @@ public class MyDBHandler extends SQLiteOpenHelper {
         c.close();
         return dbString;
     }
-
 }
