@@ -299,16 +299,28 @@ public class MyDBHandler extends SQLiteOpenHelper {
     //**************************** TEACHER SECTION ****************************
 
 
-    //Check the attendance of a class the teacher takes (YET TO COMPLETE!!!)                        INCOMPLETE!!!
+    //Check the attendance of a class the teacher takes
     public String teacherGetAttendance(Teacher teacher) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT";                        //Complete the query
+        //GET THE SUBJECT CODE OF THE SUBJECT THAT THE TEACHER TAKES
+        String teacherQuery = "SELECT su.subjectid FROM subject su,teacher t,attendance at " +
+                "WHERE su.subjectid = at.subjectid and " +
+                "at.teacherid = t.teacherid and " +
+                "t.teacherid = " + "\"" + teacher.getTeacherid() + "\";";
+        Cursor c1 = db.rawQuery(teacherQuery, null);
+        String fullSubjectCode = databaseToString(c1);
+        String subjectCode = fullSubjectCode.substring(fullSubjectCode.length() - 3, fullSubjectCode.length() - 1);  //GETS THE LAST CHARACTER OF SUBJECT CODE
 
-        /*      ### INSERT CODE HERE ###        */
 
-        Cursor c = db.rawQuery(query, null);
-        return databaseToString(c);
+        //GET THE USN,NAME AND THE CLASSES ATTENDED OF ALL STUDENTS WHO TAKE THAT SUBJECT!!
+        String query = "SELECT s.usn,s.name,s.sub" + subjectCode + " FROM student s,teacher t,attendance at " +
+                "WHERE s.semester = at.semester and " +
+                "s.section = at.section and " +
+                "at.teacherid = t.teacherid and " +
+                "t.teacherid = " + "\"" + teacher.getTeacherid() + "\";";
+        Cursor c2 = db.rawQuery(query, null);
+        return databaseToString(c2);
     }
 
     //TAKE ATTENDANCE (YET TO COMPLETE)                                                             INCOMPLETE!!!

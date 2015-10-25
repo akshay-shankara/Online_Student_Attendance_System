@@ -31,9 +31,9 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         String inputText = input.getText().toString();
-                        Student student = new Student();
-                        student.setUsn("1RN13IS001");
-                        String output = dbHandler.studentShortage(student);                //Gets the teachers who takes class for the student
+                        Teacher teacher = new Teacher();
+                        teacher.setTeacherid(1);
+                        String output = dbHandler.teacherGetAttendance(teacher);
                         textData.setText(output);
                     }
                 }

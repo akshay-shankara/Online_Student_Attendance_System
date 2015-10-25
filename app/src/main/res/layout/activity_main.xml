@@ -46,7 +46,7 @@
         android:layout_alignParentEnd="true"
         android:inputType="text"
         android:editable="true"
-        android:text="1RN13IS001"
+        android:text="1"
         android:gravity="center"
         android:autoText="false" />
 

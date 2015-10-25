@@ -47,14 +47,32 @@ public class InsertData {
 
         cValues.clear();
         cValues.put(MyDBHandler.COLUMN_TEACHERID, 4);
-        cValues.put(MyDBHandler.COLUMN_TEACHERNAME, "Girijamma H.A");
-        cValues.put(MyDBHandler.COLUMN_BRANCH, "CS");
+        cValues.put(MyDBHandler.COLUMN_TEACHERNAME, "Niharika");
+        cValues.put(MyDBHandler.COLUMN_BRANCH, "IS");
         db.insert(MyDBHandler.TABLE_TEACHER, null, cValues);
 
         cValues.clear();
         cValues.put(MyDBHandler.COLUMN_TEACHERID, 5);
-        cValues.put(MyDBHandler.COLUMN_TEACHERNAME, "H.R Shashidhar");
-        cValues.put(MyDBHandler.COLUMN_BRANCH, "CS");
+        cValues.put(MyDBHandler.COLUMN_TEACHERNAME, "Tejaswini");
+        cValues.put(MyDBHandler.COLUMN_BRANCH, "IS");
+        db.insert(MyDBHandler.TABLE_TEACHER, null, cValues);
+
+        cValues.clear();
+        cValues.put(MyDBHandler.COLUMN_TEACHERID, 6);
+        cValues.put(MyDBHandler.COLUMN_TEACHERNAME, "Kusuma");
+        cValues.put(MyDBHandler.COLUMN_BRANCH, "IS");
+        db.insert(MyDBHandler.TABLE_TEACHER, null, cValues);
+
+        cValues.clear();
+        cValues.put(MyDBHandler.COLUMN_TEACHERID, 7);
+        cValues.put(MyDBHandler.COLUMN_TEACHERNAME, "Iris");
+        cValues.put(MyDBHandler.COLUMN_BRANCH, "IS");
+        db.insert(MyDBHandler.TABLE_TEACHER, null, cValues);
+
+        cValues.clear();
+        cValues.put(MyDBHandler.COLUMN_TEACHERID, 8);
+        cValues.put(MyDBHandler.COLUMN_TEACHERNAME, "Hema");
+        cValues.put(MyDBHandler.COLUMN_BRANCH, "IS");
         db.insert(MyDBHandler.TABLE_TEACHER, null, cValues);
 
 
@@ -107,7 +125,7 @@ public class InsertData {
         db.insert(MyDBHandler.TABLE_ATTENDANCE, null, cValues);
 
         cValues.clear();
-        cValues.put(MyDBHandler.COLUMN_TEACHERID, 3);
+        cValues.put(MyDBHandler.COLUMN_TEACHERID, 2);
         cValues.put(MyDBHandler.COLUMN_SEMESTER, 5);
         cValues.put(MyDBHandler.COLUMN_SUBJECTID, "10CS52");
         cValues.put(MyDBHandler.COLUMN_SECTION, "A");
@@ -123,7 +141,7 @@ public class InsertData {
         db.insert(MyDBHandler.TABLE_ATTENDANCE, null, cValues);
 
         cValues.clear();
-        cValues.put(MyDBHandler.COLUMN_TEACHERID, 2);
+        cValues.put(MyDBHandler.COLUMN_TEACHERID, 4);
         cValues.put(MyDBHandler.COLUMN_SEMESTER, 5);
         cValues.put(MyDBHandler.COLUMN_SUBJECTID, "10CS54");
         cValues.put(MyDBHandler.COLUMN_SECTION, "A");
@@ -131,7 +149,7 @@ public class InsertData {
         db.insert(MyDBHandler.TABLE_ATTENDANCE, null, cValues);
 
         cValues.clear();
-        cValues.put(MyDBHandler.COLUMN_TEACHERID, 1);
+        cValues.put(MyDBHandler.COLUMN_TEACHERID, 5);
         cValues.put(MyDBHandler.COLUMN_SEMESTER, 5);
         cValues.put(MyDBHandler.COLUMN_SUBJECTID, "10CS55");
         cValues.put(MyDBHandler.COLUMN_SECTION, "A");
@@ -139,7 +157,7 @@ public class InsertData {
         db.insert(MyDBHandler.TABLE_ATTENDANCE, null, cValues);
 
         cValues.clear();
-        cValues.put(MyDBHandler.COLUMN_TEACHERID, 1);
+        cValues.put(MyDBHandler.COLUMN_TEACHERID, 6);
         cValues.put(MyDBHandler.COLUMN_SEMESTER, 5);
         cValues.put(MyDBHandler.COLUMN_SUBJECTID, "10CS56");
         cValues.put(MyDBHandler.COLUMN_SECTION, "A");
@@ -147,7 +165,7 @@ public class InsertData {
         db.insert(MyDBHandler.TABLE_ATTENDANCE, null, cValues);
 
         cValues.clear();
-        cValues.put(MyDBHandler.COLUMN_TEACHERID, 1);
+        cValues.put(MyDBHandler.COLUMN_TEACHERID, 7);
         cValues.put(MyDBHandler.COLUMN_SEMESTER, 5);
         cValues.put(MyDBHandler.COLUMN_SUBJECTID, "10CS55");
         cValues.put(MyDBHandler.COLUMN_SECTION, "B");
@@ -155,20 +173,13 @@ public class InsertData {
         db.insert(MyDBHandler.TABLE_ATTENDANCE, null, cValues);
 
         cValues.clear();
-        cValues.put(MyDBHandler.COLUMN_TEACHERID, 3);
+        cValues.put(MyDBHandler.COLUMN_TEACHERID, 8);
         cValues.put(MyDBHandler.COLUMN_SEMESTER, 5);
         cValues.put(MyDBHandler.COLUMN_SUBJECTID, "10CS51");
         cValues.put(MyDBHandler.COLUMN_SECTION, "B");
         cValues.put(MyDBHandler.COLUMN_TOTAL, 39);
         db.insert(MyDBHandler.TABLE_ATTENDANCE, null, cValues);
 
-        cValues.clear();
-        cValues.put(MyDBHandler.COLUMN_TEACHERID, 3);
-        cValues.put(MyDBHandler.COLUMN_SEMESTER, 5);
-        cValues.put(MyDBHandler.COLUMN_SUBJECTID, "10CS53");
-        cValues.put(MyDBHandler.COLUMN_SECTION, "B");
-        cValues.put(MyDBHandler.COLUMN_TOTAL, 32);
-        db.insert(MyDBHandler.TABLE_ATTENDANCE, null, cValues);
 
         cValues.clear();
 
